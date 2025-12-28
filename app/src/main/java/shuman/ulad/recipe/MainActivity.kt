@@ -53,6 +53,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupPeriodicWork() {
+//        val testRequest = androidx.work.OneTimeWorkRequestBuilder<DailyRecipeWorker>()
+//            .setInitialDelay(10, TimeUnit.SECONDS)
+//            .setConstraints(
+//                Constraints.Builder()
+//                    .setRequiredNetworkType(NetworkType.CONNECTED)
+//                    .build()
+//            )
+//            .build()
+//
+//        WorkManager.getInstance(this).enqueue(testRequest)
+
         val workRequest = PeriodicWorkRequestBuilder<DailyRecipeWorker>(
             24, TimeUnit.HOURS
         )

@@ -37,4 +37,7 @@
     <string name="create_button_save">Сохранить рецепт</string>
 
     <string name="detail_category_prefix">Категория: </string>
+
+    <string name="notification_title">Рецепт дня! 🍲</string>
+    <string name="notification_message">Попробуйте приготовить: %s</string>
 </resources>

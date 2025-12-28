@@ -8,6 +8,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import shuman.ulad.recipe.R
 import shuman.ulad.recipe.domain.repository.RecipeRepository
 import shuman.ulad.recipe.presentation.util.NotificationHelper
 
@@ -20,11 +21,13 @@ class DailyRecipeWorker @AssistedInject constructor(
     override suspend fun doWork(): Result = withContext(Dispatchers.IO){
         return@withContext try {
             val recipe = repository.fetchRandomRecipe()
+            val title = applicationContext.getString(R.string.notification_title)
+            val message = applicationContext.getString(R.string.notification_message, recipe.name)
 
             NotificationHelper.showNotification(
                 applicationContext,
-                "Recipe of the Day! 🍲",
-                "Try to cook: ${recipe.name}",
+                title,
+                message,
                 recipe.id
             )
 

@@ -36,4 +36,7 @@
     <string name="create_button_save">Захаваць рэцэпт</string>
 
     <string name="detail_category_prefix">Катэгорыя: </string>
+
+    <string name="notification_title">Рэцэпт дня! 🍲</string>
+    <string name="notification_message">Паспрабуйце прыгатаваць: %s</string>
 </resources>

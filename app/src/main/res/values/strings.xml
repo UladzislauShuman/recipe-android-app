@@ -37,4 +37,7 @@
     <string name="create_button_save">Save Recipe</string>
 
     <string name="detail_category_prefix">Category: </string>
+
+    <string name="notification_title">Recipe of the Day! 🍲</string>
+    <string name="notification_message">Try to cook: %s</string>
 </resources>
