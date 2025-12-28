@@ -1,99 +1,168 @@
 package shuman.ulad.recipe.presentation.settings.components
 
-import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import shuman.ulad.recipe.R
+import shuman.ulad.recipe.data.local.preferences.AppTheme
 import shuman.ulad.recipe.presentation.settings.SettingsViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    viewModel: SettingsViewModel = hiltViewModel()
+    viewModel: SettingsViewModel = hiltViewModel(),
+    onNavigateToBackup: () -> Unit
 ) {
-    val context = LocalContext.current
+    val currentTheme by viewModel.currentTheme.collectAsState()
+    var showThemeDialog by remember { mutableStateOf(false) }
+    var showLangDialog by remember { mutableStateOf(false) }
 
-    LaunchedEffect(key1 = true) {
-        viewModel.uiEvent.collect { message ->
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-        }
+    val currentLocales = AppCompatDelegate.getApplicationLocales()
+    val currentLanguageCode = currentLocales.get(0)?.language
+
+    val languageSubtitle = when (currentLanguageCode) {
+        "ru" -> "Русский"
+        "be" -> "Беларуская"
+        "en" -> "English"
+        else -> stringResource(R.string.theme_system)
     }
 
-    val exportLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.CreateDocument("application/zip"),
-        onResult = { uri ->
-            uri?.let { viewModel.exportData(it) }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.settings_title)) }
+            )
         }
-    )
-
-    val importLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.OpenDocument(),
-        onResult = { uri ->
-            uri?.let {viewModel.importData(it) }
-        }
-    )
-
-    Scaffold { paddingValues ->
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "Backup & Restore",
-                style = MaterialTheme.typography.headlineMedium
+            SettingsItem(
+                title = stringResource(R.string.settings_language),
+                subtitle = languageSubtitle,
+                onClick = { showLangDialog = true }
             )
 
-            Text(
-                text = "Save your recipes and images to Google Drive",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.secondary
+            SettingsItem(
+                title = stringResource(R.string.settings_theme),
+                subtitle = when(currentTheme) {
+                    AppTheme.LIGHT -> stringResource(R.string.theme_light)
+                    AppTheme.DARK -> stringResource(R.string.theme_dark)
+                    AppTheme.SYSTEM -> stringResource(R.string.theme_system)
+                },
+                onClick = { showThemeDialog = true }
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
-
-            Button(
-                onClick = { exportLauncher.launch("recipes_backup.zip") },
-                modifier = Modifier.fillMaxWidth().height(56.dp)
-            ) {
-                Icon(Icons.Default.KeyboardArrowUp, contentDescription = null)
-                Spacer(modifier = Modifier.padding(4.dp))
-                Text("Backup to Drive")
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(
-                onClick = { importLauncher.launch(arrayOf("application/zip")) },
-                modifier = Modifier.fillMaxWidth().height(56.dp)
-            ) {
-                Icon(Icons.Default.KeyboardArrowDown, contentDescription = null)
-                Spacer(modifier = Modifier.padding(4.dp))
-                Text("Restore from Drive")
-            }
+            SettingsItem(
+                title = stringResource(R.string.settings_backup),
+                subtitle = stringResource(R.string.settings_backup_desc),
+                onClick = onNavigateToBackup
+            )
         }
+    }
+
+    if (showThemeDialog) {
+        AlertDialog(
+            onDismissRequest = { showThemeDialog = false },
+            title = { Text(stringResource(R.string.settings_theme)) },
+            text = {
+                Column {
+                    ThemeOption(stringResource(R.string.theme_system), AppTheme.SYSTEM, currentTheme, viewModel) { showThemeDialog = false }
+                    ThemeOption(stringResource(R.string.theme_light), AppTheme.LIGHT, currentTheme, viewModel) { showThemeDialog = false }
+                    ThemeOption(stringResource(R.string.theme_dark), AppTheme.DARK, currentTheme, viewModel) { showThemeDialog = false }
+                }
+            },
+            confirmButton = {}
+        )
+    }
+
+    if (showLangDialog) {
+        AlertDialog(
+            onDismissRequest = { showLangDialog = false },
+            title = { Text(stringResource(R.string.settings_language)) },
+            text = {
+                Column {
+                    LanguageOption("English", "en", viewModel) { showLangDialog = false }
+                    LanguageOption("Русский", "ru", viewModel) { showLangDialog = false }
+                    LanguageOption("Беларуская", "be", viewModel) { showLangDialog = false }
+                }
+            },
+            confirmButton = {}
+        )
+    }
+}
+
+
+@Composable
+fun SettingsItem(
+    title: String,
+    subtitle: String,
+    icon: ImageVector? = null,
+    onClick: () -> Unit
+) {
+    ListItem(
+        headlineContent = { Text(title) },
+        supportingContent = { Text(subtitle) },
+        leadingContent = icon?.let { { Icon(it, contentDescription = null) } },
+        trailingContent = { Icon(Icons.Default.ArrowForward, contentDescription = null) },
+        modifier = Modifier.clickable { onClick() }
+    )
+}
+
+@Composable
+fun ThemeOption(
+    text: String,
+    theme: AppTheme,
+    current: AppTheme,
+    vm: SettingsViewModel,
+    onSelect: () -> Unit
+) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .clickable {
+                vm.changeTheme(theme)
+                onSelect()
+            }
+            .padding(12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        RadioButton(selected = (theme == current), onClick = null)
+        Spacer(Modifier.width(8.dp))
+        Text(text)
+    }
+}
+
+@Composable
+fun LanguageOption(
+    text: String,
+    code: String,
+    vm: SettingsViewModel,
+    onSelect: () -> Unit
+) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .clickable {
+                vm.changeLanguage(code)
+                onSelect()
+            }
+            .padding(12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(text, style = MaterialTheme.typography.bodyLarge)
     }
 }

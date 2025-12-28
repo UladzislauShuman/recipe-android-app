@@ -1,11 +1,13 @@
 package shuman.ulad.recipe
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.work.Constraints
@@ -15,6 +17,8 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.recipekeeper.presentation.MainScreen
 import dagger.hilt.android.AndroidEntryPoint
+import shuman.ulad.recipe.data.local.preferences.AppPreferences
+import shuman.ulad.recipe.data.local.preferences.AppTheme
 import shuman.ulad.recipe.data.remote.api.RecipeApi
 import shuman.ulad.recipe.data.worker.DailyRecipeWorker
 import shuman.ulad.recipe.ui.theme.RecipeTheme
@@ -22,10 +26,10 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var api: RecipeApi
+    @Inject lateinit var api: RecipeApi
+    @Inject lateinit var appPreferences: AppPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +43,8 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
-            RecipeTheme {
+            val currentTheme by appPreferences.theme.collectAsState(initial = AppTheme.SYSTEM)
+            RecipeTheme(appTheme = currentTheme) {
                 MainScreen(
                     deepLinkRecipeId = recipeIdFromNotification
                 )

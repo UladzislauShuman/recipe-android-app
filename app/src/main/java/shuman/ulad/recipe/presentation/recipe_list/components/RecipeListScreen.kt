@@ -25,10 +25,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import shuman.ulad.recipe.presentation.recipe_list.RecipeListViewModel
+import shuman.ulad.recipe.R
 
 @Composable
 fun RecipeListScreen (
@@ -64,7 +66,7 @@ fun RecipeListScreen (
                     modifier = Modifier
                         .weight(1f),
                     placeholder = {
-                        Text(text = "Search...")
+                        Text(text = stringResource(R.string.search_hint_web))
                     },
                     trailingIcon = {
                         IconButton(onClick = { viewModel.searchRecipes() }) {

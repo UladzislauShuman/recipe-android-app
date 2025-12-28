@@ -19,10 +19,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import shuman.ulad.recipe.R
 import shuman.ulad.recipe.presentation.recipe_detail.RecipeDetailState
 import shuman.ulad.recipe.presentation.recipe_detail.RecipeDetailViewModel
 
@@ -76,7 +78,7 @@ fun RecipeDetailScreen(
 
                     item {
                         Text(
-                            text = "Category: ${recipe.category}",
+                            text = "${stringResource(R.string.detail_category_prefix)}${recipe.category}",
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.secondary
                         )

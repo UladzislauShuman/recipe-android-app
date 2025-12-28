@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Recipe</string>
+
+    <string name="nav_web">Поиск</string>
+    <string name="nav_my_recipes">Мои рецепты</string>
+    <string name="nav_favorites">Избранное</string>
+    <string name="nav_settings">Настройки</string>
+
+    <string name="settings_title">Настройки</string>
+    <string name="settings_language">Язык</string>
+    <string name="settings_theme">Тема</string>
+    <string name="settings_backup">Бэкап и Восстановление</string>
+    <string name="settings_backup_desc">Сохранить данные на Google Drive</string>
+
+    <string name="backup_screen_title">Бэкап и Восстановление</string>
+    <string name="backup_screen_subtitle">Сохранить рецепты и фото на Google Drive</string>
+    <string name="backup_btn_export">Сохранить на Диск</string>
+    <string name="backup_btn_import">Восстановить с Диска</string>
+
+    <string name="theme_system">Системная</string>
+    <string name="theme_light">Светлая</string>
+    <string name="theme_dark">Темная</string>
+
+    <string name="search_hint_web">Поиск...</string>
+    <string name="search_hint_my_recipes">Поиск моих рецептов...</string>
+    <string name="search_hint_favorites">Поиск в избранном...</string>
+
+    <string name="empty_no_recipes_found">Рецепты не найдены</string>
+    <string name="empty_no_favorites">В избранном пока пусто</string>
+    <string name="empty_no_matches">Ничего не найдено</string>
+
+    <string name="create_tap_to_select_image">Нажмите, чтобы выбрать фото</string>
+    <string name="create_label_name">Название рецепта</string>
+    <string name="create_label_category">Категория</string>
+    <string name="create_label_instructions">Инструкция</string>
+    <string name="create_button_save">Сохранить рецепт</string>
+
+    <string name="detail_category_prefix">Категория: </string>
+</resources>

@@ -19,8 +19,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import shuman.ulad.recipe.R
 import shuman.ulad.recipe.presentation.favorites.FavoritesViewModel
 import shuman.ulad.recipe.presentation.recipe_list.components.RecipeListItem
 
@@ -40,7 +42,7 @@ fun FavoritesScreen (
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            placeholder = { Text("Search favorites...") },
+            placeholder = { Text(stringResource(R.string.search_hint_favorites)) },
             singleLine = true,
             trailingIcon = {
                 Icon(Icons.Default.Search, contentDescription = null)
@@ -52,9 +54,13 @@ fun FavoritesScreen (
                 .fillMaxSize()
         ) {
             if (state.recipes.isEmpty()) {
-                val emptyText = if (state.query.isEmpty()) "No favorite recipe yet" else "No matches found"
+                val emptyTextResId =
+                    if (state.query.isEmpty())
+                        R.string.empty_no_favorites
+                    else
+                        R.string.empty_no_matches
                 Text(
-                    text = emptyText,
+                    text = stringResource(emptyTextResId),
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.align(Alignment.Center)
                 )

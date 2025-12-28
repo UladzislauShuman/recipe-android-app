@@ -12,6 +12,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -25,6 +26,7 @@ import shuman.ulad.recipe.presentation.favorites.components.FavoritesScreen
 import shuman.ulad.recipe.presentation.recipe_detail.components.RecipeDetailScreen
 import shuman.ulad.recipe.presentation.recipe_list.components.RecipeListScreen
 import shuman.ulad.recipe.presentation.local_recipes.components.LocalRecipesScreen
+import shuman.ulad.recipe.presentation.settings.components.BackupScreen
 import shuman.ulad.recipe.presentation.settings.components.SettingsScreen
 
 @Composable
@@ -78,7 +80,7 @@ fun MainScreen(
                     bottomScreens.forEach { screen ->
                         NavigationBarItem(
                             icon = { Icon(screen.icon!!, contentDescription = null) },
-                            label = { Text(screen.title!!) },
+                            label = { Text(stringResource(screen.title!!)) },
                             selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                             onClick = {
                                 navController.navigate(screen.route) {
@@ -130,7 +132,13 @@ fun MainScreen(
             }
 
             composable(Screen.Settings.route) {
-                SettingsScreen()
+                SettingsScreen(
+                    onNavigateToBackup = { navController.navigate(Screen.Backup.route) }
+                )
+            }
+
+            composable(Screen.Backup.route) {
+                BackupScreen()
             }
         }
     }

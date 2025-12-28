@@ -18,8 +18,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import shuman.ulad.recipe.R
 import shuman.ulad.recipe.presentation.local_recipes.LocalRecipesViewModel
 import shuman.ulad.recipe.presentation.recipe_list.components.RecipeListItem
 
@@ -49,7 +51,7 @@ fun LocalRecipesScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                placeholder = { Text("Search my recipes...") },
+                placeholder = { Text(stringResource(R.string.search_hint_my_recipes)) },
                 singleLine = true,
                 trailingIcon = {
                     Icon(Icons.Default.Search, contentDescription = null)
@@ -58,7 +60,7 @@ fun LocalRecipesScreen(
 
             if (state.recipes.isEmpty()) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("No recipes found")
+                    Text(stringResource(R.string.empty_no_recipes_found))
                 }
             } else {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {

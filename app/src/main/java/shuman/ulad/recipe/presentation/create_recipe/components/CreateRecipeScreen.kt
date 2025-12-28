@@ -32,9 +32,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import shuman.ulad.recipe.R
 import shuman.ulad.recipe.presentation.create_recipe.CreateRecipeViewModel
 
 @Composable
@@ -91,7 +93,7 @@ fun CreateRecipeScreen(
                 } else {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Icon(imageVector = Icons.Default.Add, contentDescription = null)
-                        Text(text = "Tap to select image")
+                        Text(text = stringResource(R.string.create_tap_to_select_image))
                     }
                 }
             }
@@ -101,7 +103,7 @@ fun CreateRecipeScreen(
             OutlinedTextField(
                 value = state.title,
                 onValueChange = { viewModel.onTitleChange(it) },
-                label = { Text("Recipe Name") },
+                label = { Text(stringResource(R.string.create_label_name)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -110,7 +112,7 @@ fun CreateRecipeScreen(
             OutlinedTextField(
                 value = state.category,
                 onValueChange = { viewModel.onCategoryChange(it) },
-                label = { Text("Category") },
+                label = { Text(stringResource(R.string.create_label_category)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -119,7 +121,7 @@ fun CreateRecipeScreen(
             OutlinedTextField(
                 value = state.instructions,
                 onValueChange = { viewModel.onInstructionsChange(it) },
-                label = { Text("Instructions") },
+                label = { Text(stringResource(R.string.create_label_instructions)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -136,7 +138,7 @@ fun CreateRecipeScreen(
                         modifier = Modifier.size(24.dp)
                     )
                 } else {
-                    Text("Save Recipe")
+                    Text(stringResource(R.string.create_button_save))
                 }
             }
         }
